@@ -37,6 +37,13 @@ CREATE TABLE tbl_rules(
     FOREIGN KEY(eventid) REFERENCES tbl_events(id)
 );
 
+CREATE TABLE tbl_rules(
+    id uuid PRIMARY KEY,
+    eventid uuid NOT NULL,
+    rules VARCHAR,
+    FOREIGN KEY(eventid) REFERENCES tbl_events(id)
+);
+
 
 INSERT INTO
     tbl_events(

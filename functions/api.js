@@ -1,6 +1,6 @@
 const express = require("express");
 const serverless = require("serverless-http");
-var cors = require("cors")
+var cors = require("cors");
 const app = express();
 const router = express.Router();
 
@@ -26,12 +26,36 @@ router.get("/", (req, res) => {
 
 router.get("/v1/api/events", async (req, res) => {
   try {
+    var getEvents = await client.query("SELECT * from tbl_events");
+    console.log(getEvents.rows);
+    res.status(200).json({
+      events: getEvents.rows,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Internal Server Error",
+      err: err,
+    });
+  }
+});
+
+router.get("/v1/api/events/:id", async (req, res) => {
+  try {
+    console.log(req.params);
     var getEvents = await client.query(
-      "SELECT * from tbl_events INNER JOIN tbl_rules ON tbl_events.id = tbl_rules.eventid"
+      "SELECT * from tbl_events WHERE id = $1",
+      [req.params.id]
+    );
+   
+    var getRules = await client.query(
+      "SELECT * from tbl_rules WHERE eventid = $1",
+      [req.params.id]
     );
     console.log(getEvents.rows);
     res.status(200).json({
       events: getEvents.rows,
+      rules: getRules.rows,
     });
   } catch (err) {
     console.log(err);

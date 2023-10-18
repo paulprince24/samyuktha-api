@@ -5,7 +5,7 @@ var app = express();
 var cors = require("cors");
 
 //Load Postgres Server
-var { client } = require("./config/db_config");
+var { client } = require("./functions/db_config");
 const morgan = require("morgan");
 
 app.use(cors());
