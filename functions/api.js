@@ -108,7 +108,7 @@ router.post("/v1/api/events/single", authenticateUser, async (req, res) => {
         studentincharge1mobile: getEventData.rows[0].studentincharge1mobile,
         studentincharge2mobile: getEventData.rows[0].studentincharge1mobile,
       };
-      sendSingleMail(mailData);
+      // sendSingleMail(mailData);
       res.status(200).json({
         status: true,
         msg: "Participant Added",
@@ -177,7 +177,7 @@ router.post("/v1/api/events/group", authenticateUser, async (req, res) => {
         studentincharge1mobile: getEventData.rows[0].studentincharge1mobile,
         studentincharge2mobile: getEventData.rows[0].studentincharge1mobile,
       };
-      sendGroupMail(mailData);
+      // sendGroupMail(mailData);
       res.status(200).json({
         status: true,
         msg: "Team Added",
