@@ -7,6 +7,13 @@ const router = express.Router();
 //Load Postgres Server
 var { client } = require("./db_config");
 const morgan = require("morgan");
+const authenticateUser = require("./middleware/authorization");
+const { uuid } = require("uuidv4");
+const {
+  sendMail,
+  sendSingleMail,
+  sendGroupMail,
+} = require("./middleware/mail");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -47,7 +54,7 @@ router.get("/v1/api/events/:id", async (req, res) => {
       "SELECT * from tbl_events WHERE id = $1",
       [req.params.id]
     );
-   
+
     var getRules = await client.query(
       "SELECT * from tbl_rules WHERE eventid = $1",
       [req.params.id]
@@ -66,26 +73,42 @@ router.get("/v1/api/events/:id", async (req, res) => {
   }
 });
 
-router.post("/v1/api/events/single", async (req, res) => {
+router.post("/v1/api/events/single", authenticateUser, async (req, res) => {
   console.log(req.body);
   try {
     var findParticipant = await client.query(
       "SELECT * from tbl_single WHERE participantemail = $1 AND eventid = $2",
       [req.body.participantemail, req.body.eventid]
     );
-    console.log(findParticipant.rowCount);
     if (findParticipant.rowCount == 0) {
       var newParticipant = await client.query(
-        "INSERT INTO tbl_single(userid,eventid,participantemail,participantname, participantphone) VALUES($1,$2,$3,$4,$5)",
+        "INSERT INTO tbl_single(id,userid,eventid,loggedInEmail,participantemail,participantname, participantphone) VALUES($1,$2,$3,$4,$5,$6,$7)",
         [
+          uuid(),
           req.body.userid,
           req.body.eventid,
+          req.user.email,
           req.body.participantemail,
           req.body.participantname,
           req.body.participantphone,
         ]
       );
       console.log(newParticipant.rows);
+      var getEventData = await client.query(
+        "SELECT eventname,studentincharge1,studentincharge2,studentincharge1mobile,studentincharge2mobile FROM tbl_events WHERE id = $1",
+        [req.body.eventid]
+      );
+      var mailData = {
+        eventName: getEventData.rows[0].eventname,
+        participantEmail: req.body.participantemail,
+        participantName: req.body.participantname,
+        participantPhone: req.body.participantphone,
+        studentincharge1: getEventData.rows[0].studentincharge1,
+        studentincharge2: getEventData.rows[0].studentincharge2,
+        studentincharge1mobile: getEventData.rows[0].studentincharge1mobile,
+        studentincharge2mobile: getEventData.rows[0].studentincharge1mobile,
+      };
+      sendSingleMail(mailData);
       res.status(200).json({
         status: true,
         msg: "Participant Added",
@@ -105,7 +128,7 @@ router.post("/v1/api/events/single", async (req, res) => {
   }
 });
 
-router.post("/v1/api/events/group", async (req, res) => {
+router.post("/v1/api/events/group", authenticateUser, async (req, res) => {
   console.log(req.body);
   try {
     var findParticipant = await client.query(
@@ -114,11 +137,14 @@ router.post("/v1/api/events/group", async (req, res) => {
     );
     console.log(findParticipant.rowCount);
     if (findParticipant.rowCount == 0) {
+      console.log(uuid());
       var newParticipant = await client.query(
-        "INSERT INTO tbl_group(userId,eventId,participant1Email,participant1Name,participant1Phone,participant2Name,participant2Phone,participant3Name,participant3Phone,participant4Name,participant4Phone,participant5Name,participant5Phone) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)",
+        "INSERT INTO tbl_group(id,userId,eventId,loggedinemail,participant1Email,participant1Name,participant1Phone,participant2Name,participant2Phone,participant3Name,participant3Phone,participant4Name,participant4Phone,participant5Name,participant5Phone) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
         [
+          uuid(),
           req.body.userid,
           req.body.eventid,
+          req.user.email,
           req.body.participant1email,
           req.body.participant1name,
           req.body.participant1phone,
@@ -133,6 +159,25 @@ router.post("/v1/api/events/group", async (req, res) => {
         ]
       );
       console.log(newParticipant.rows);
+      var getEventData = await client.query(
+        "SELECT eventname,studentincharge1,studentincharge2,studentincharge1mobile,studentincharge2mobile FROM tbl_events WHERE id = $1",
+        [req.body.eventid]
+      );
+      var mailData = {
+        eventName: getEventData.rows[0].eventname,
+        participant1Email: req.body.participant1email,
+        participant1Name: req.body.participant1name,
+        participant1Phone: req.body.participant1phone,
+        participant2Name: req.body.participant2name,
+        participant3Name: req.body.participant3name,
+        participant4Name: req.body.participant4name,
+        participant5Name: req.body.participant5name,
+        studentincharge1: getEventData.rows[0].studentincharge1,
+        studentincharge2: getEventData.rows[0].studentincharge2,
+        studentincharge1mobile: getEventData.rows[0].studentincharge1mobile,
+        studentincharge2mobile: getEventData.rows[0].studentincharge1mobile,
+      };
+      sendGroupMail(mailData);
       res.status(200).json({
         status: true,
         msg: "Team Added",

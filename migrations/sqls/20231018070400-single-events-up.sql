@@ -1,7 +1,8 @@
 CREATE TABLE tbl_single(
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     userId uuid NOT NULL,
-    eventId INT NOT NULL,
+    eventId uuid NOT NULL,
+    loggedInEmail VARCHAR NOT NULL,
     participantEmail VARCHAR NOT NULL,
     participantName VARCHAR NOT NULL,
     participantPhone VARCHAR NOT NULL
