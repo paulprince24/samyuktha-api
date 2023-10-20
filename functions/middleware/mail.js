@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
   auth: {
     // TODO: replace `user` and `pass` values from <https://forwardemail.net>
     user: "samyuktha7.0.2023@gmail.com",
-    pass: "xsmtpsib-a844650df0ffd4d62e25033b5b1f40b5bfdd394adac8dfb4857d87601c2e0905-Wdw3tg1mX8Nfq2OT",
+    pass: "xsmtpsib-a844650df0ffd4d62e25033b5b1f40b5bfdd394adac8dfb4857d87601c2e0905-3kTFOwQmWJjvM479",
   },
 });
 
