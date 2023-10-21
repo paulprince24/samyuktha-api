@@ -1,4 +1,6 @@
+const { uuid } = require("uuidv4");
 const { client } = require("../../db_config");
+const { sendSingleMail, sendGroupMail } = require("../../middleware/mail");
 
 async function addSingleEventParticipants(req, res, next) {
   try {

@@ -46,22 +46,30 @@ router.get("/v1/api/events", async (req, res, next) => {
 // @Route http://localhost:5000/v1/api/events/:id
 // @method GET
 
-router.get("/v1/api/events/:id", async (req, res) => {
+router.get("/v1/api/events/:id", async (req, res, next) => {
   getIndividualEvents(req, res, next);
 });
 
 // @Route http://localhost:5000/v1/api/events/single
 // @method POST
-router.post("/v1/api/events/single", authenticateUser, async (req, res) => {
-  addSingleEventParticipants(req, res, next);
-});
+router.post(
+  "/v1/api/events/single",
+  authenticateUser,
+  async (req, res, next) => {
+    addSingleEventParticipants(req, res, next);
+  }
+);
 
 // @Route http://localhost:5000/v1/api/events/group
 // @method POST
 
-router.post("/v1/api/events/group", authenticateUser, async (req, res) => {
-  addGroupEventParticipants(req, res, next);
-});
+router.post(
+  "/v1/api/events/group",
+  authenticateUser,
+  async (req, res, next) => {
+    addGroupEventParticipants(req, res, next);
+  }
+);
 
 router.get("/v1/api/events/group", async (req, res) => {
   try {
