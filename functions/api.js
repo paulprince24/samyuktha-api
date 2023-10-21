@@ -105,6 +105,33 @@ router.get("/v1/api/admin/events/single/:eventid", async (req, res) => {
   }
 });
 
+router.get("/v1/api/events/user/check", authenticateUser, async (req, res) => {
+  try {
+    console.log(req.user);
+    var fetchedData = await client.query(
+      "SELECT eventid FROM tbl_single WHERE userid = $1 AND loggedinemail = $2",
+      [req.body.userid, req.user.email]
+    );
+    console.log(fetchedData.rows);
+    if (fetchedData.rowCount > 0) {
+      var groupData = await client.query(
+        "SELECT eventid FROM tbl_group WHERE userid = $1 AND loggedinemail = $2",
+        [req.body.userid, req.user.email]
+      );
+      res.status(200).json({
+        singleEvents: fetchedData.rows,
+        groupEvents: groupData.rows,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Internal Server Error",
+      err: err,
+    });
+  }
+});
+
 app.use("/", router);
 
 module.exports.handler = serverless(app);
