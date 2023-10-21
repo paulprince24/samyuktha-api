@@ -5,9 +5,10 @@ CREATE TABLE tbl_single(
     loggedInEmail VARCHAR NOT NULL,
     participantEmail VARCHAR NOT NULL,
     participantName VARCHAR NOT NULL,
-    participantPhone VARCHAR NOT NULL
+    participantPhone VARCHAR NOT NULL,
+    courseName VARCHAR NOT NULL,
+    collegeName VARCHAR NOT NULL
 );
-
 
 CREATE TABLE tbl_group(
     id uuid PRIMARY KEY,
@@ -17,6 +18,8 @@ CREATE TABLE tbl_group(
     participant1Email VARCHAR NOT NULL,
     participant1Name VARCHAR NOT NULL,
     participant1Phone VARCHAR NOT NULL,
+    courseName VARCHAR NOT NULL,
+    collegeName VARCHAR NOT NULL,
     participant2Name VARCHAR,
     participant2Phone VARCHAR,
     participant3Name VARCHAR,

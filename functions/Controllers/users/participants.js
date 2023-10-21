@@ -10,7 +10,7 @@ async function addSingleEventParticipants(req, res, next) {
     );
     if (findParticipant.rowCount == 0) {
       var newParticipant = await client.query(
-        "INSERT INTO tbl_single(id,userid,eventid,loggedInEmail,participantemail,participantname, participantphone) VALUES($1,$2,$3,$4,$5,$6,$7)",
+        "INSERT INTO tbl_single(id,userid,eventid,loggedInEmail,participantemail,participantname, participantphone,courseName,collegeName) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
         [
           uuid(),
           req.body.userid,
@@ -19,6 +19,8 @@ async function addSingleEventParticipants(req, res, next) {
           req.body.participantemail,
           req.body.participantname,
           req.body.participantphone,
+          req.body.course,
+          req.body.college,
         ]
       );
       console.log(newParticipant.rows);
@@ -36,7 +38,7 @@ async function addSingleEventParticipants(req, res, next) {
         studentincharge1mobile: getEventData.rows[0].studentincharge1mobile,
         studentincharge2mobile: getEventData.rows[0].studentincharge1mobile,
       };
-      sendSingleMail(mailData);
+      // sendSingleMail(mailData);
       res.status(200).json({
         status: true,
         msg: "Participant Added",
@@ -66,7 +68,7 @@ async function addGroupEventParticipants(req, res, next) {
     if (findParticipant.rowCount == 0) {
       console.log(uuid());
       var newParticipant = await client.query(
-        "INSERT INTO tbl_group(id,userId,eventId,loggedinemail,participant1Email,participant1Name,participant1Phone,participant2Name,participant2Phone,participant3Name,participant3Phone,participant4Name,participant4Phone,participant5Name,participant5Phone) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
+        "INSERT INTO tbl_group(id,userId,eventId,loggedinemail,participant1Email,participant1Name,participant1Phone,courseName,collegeName,participant2Name,participant2Phone,participant3Name,participant3Phone,participant4Name,participant4Phone,participant5Name,participant5Phone) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)",
         [
           uuid(),
           req.body.userid,
@@ -74,6 +76,8 @@ async function addGroupEventParticipants(req, res, next) {
           req.user.email,
           req.body.participant1email,
           req.body.participant1name,
+          req.body.course,
+          req.body.college,
           req.body.participant1phone,
           req.body.participant2name || "",
           req.body.participant2phone || "",

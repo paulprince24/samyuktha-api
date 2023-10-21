@@ -82,10 +82,20 @@ router.get("/v1/api/events/group", async (req, res) => {
     });
   }
 });
-router.get("/v1/api/events/single", async (req, res) => {
+router.get("/v1/api/admin/events/single/:eventid", async (req, res) => {
   try {
-    var getRegisteredUser = await client.query("SELECT * FROM tbl_single");
-    res.status(200).json(getRegisteredUser.rows);
+    console.log(req.params)
+    var getRegisteredUser = await client.query(
+      "SELECT * FROM tbl_single WHERE eventid = $1",
+      [req.params.eventid]
+    );
+    if (getRegisteredUser.rowCount == 0) {
+      res.status(200).json({
+        msg: "No Records found",
+      });
+    } else {
+      res.status(200).json(getRegisteredUser.rows);
+    }
   } catch (err) {
     console.log(err);
     res.status(200).json({
