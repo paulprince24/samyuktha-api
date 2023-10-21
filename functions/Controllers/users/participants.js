@@ -44,7 +44,7 @@ async function addSingleEventParticipants(req, res, next) {
         msg: "Participant Added",
       });
     } else {
-      res.status(200).json({
+      res.status(400).json({
         status: false,
         msg: "Pariticipant is already registered",
       });
@@ -114,7 +114,7 @@ async function addGroupEventParticipants(req, res, next) {
         msg: "Team Added",
       });
     } else {
-      res.status(200).json({
+      res.status(400).json({
         status: false,
         msg: "Team is already registered",
       });

@@ -1,6 +1,6 @@
 CREATE TABLE tbl_single(
     id uuid PRIMARY KEY,
-    userId uuid NOT NULL,
+    userId VARCHAR NOT NULL,
     eventId uuid NOT NULL,
     loggedInEmail VARCHAR NOT NULL,
     participantEmail VARCHAR NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE tbl_single(
 
 CREATE TABLE tbl_group(
     id uuid PRIMARY KEY,
-    userId uuid NOT NULL,
+    userId VARCHAR NOT NULL,
     eventId uuid NOT NULL,
     loggedInEmail VARCHAR NOT NULL,
     participant1Email VARCHAR NOT NULL,

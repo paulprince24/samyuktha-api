@@ -7,5 +7,5 @@ CREATE TABLE tbl_single(
     participantName VARCHAR NOT NULL,
     participantPhone VARCHAR NOT NULL,
     courseName VARCHAR NOT NULL,
-    collegeName VARCHAR NOT NULL,
+    collegeName VARCHAR NOT NULL
 );

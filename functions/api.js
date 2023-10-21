@@ -84,11 +84,12 @@ router.get("/v1/api/events/group", async (req, res) => {
 });
 router.get("/v1/api/admin/events/single/:eventid", async (req, res) => {
   try {
-    console.log(req.params)
+    console.log(req.params);
     var getRegisteredUser = await client.query(
-      "SELECT * FROM tbl_single WHERE eventid = $1",
+      "SELECT * FROM tbl_single INNER JOIN tbl_events ON tbl_single.eventid = tbl_events.id WHERE eventid = $1",
       [req.params.eventid]
     );
+    console.log(getRegisteredUser.rows);
     if (getRegisteredUser.rowCount == 0) {
       res.status(200).json({
         msg: "No Records found",
