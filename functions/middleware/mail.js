@@ -2,14 +2,13 @@ const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
-  port: 587,
+  port: 465,
   secure: false,
   auth: {
     // TODO: replace `user` and `pass` values from <https://forwardemail.net>
     user: "samyuktha7.0.2023@gmail.com",
-    pass: "xsmtpsib-a844650df0ffd4d62e25033b5b1f40b5bfdd394adac8dfb4857d87601c2e0905-DbPnISNgMUEjcA8C",
+    pass: "WvZ4K1U9IskfbnFg",
   },
-  tls: { rejectUnauthorized: false },
 });
 
 function sendSingleMail(data) {
