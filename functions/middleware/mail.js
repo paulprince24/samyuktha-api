@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
   port: 587,
-  secure: false,
+  secure: true,
   auth: {
     // TODO: replace `user` and `pass` values from <https://forwardemail.net>
     user: "samyuktha7.0.2023@gmail.com",
