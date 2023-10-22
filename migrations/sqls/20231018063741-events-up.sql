@@ -21,25 +21,6 @@ CREATE TABLE tbl_events(
 CREATE TABLE tbl_rules(
     id uuid PRIMARY KEY,
     eventid uuid NOT NULL,
-    rule_1 VARCHAR,
-    rule_2 VARCHAR,
-    rule_3 VARCHAR,
-    rule_4 VARCHAR,
-    rule_5 VARCHAR,
-    rule_6 VARCHAR,
-    rule_7 VARCHAR,
-    rule_8 VARCHAR,
-    rule_9 VARCHAR,
-    rule_10 VARCHAR,
-    rule_11 VARCHAR,
-    rule_12 VARCHAR,
-    rule_13 VARCHAR,
-    FOREIGN KEY(eventid) REFERENCES tbl_events(id)
-);
-
-CREATE TABLE tbl_rules(
-    id uuid PRIMARY KEY,
-    eventid uuid NOT NULL,
     rules VARCHAR,
     FOREIGN KEY(eventid) REFERENCES tbl_events(id)
 );
